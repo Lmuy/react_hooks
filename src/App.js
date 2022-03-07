@@ -14,7 +14,7 @@ function App() {
             <Route exact path='/home' element={<Home />} />
             <Route exact path='/login' element={<Login/>} />
             <Route exact path='/layout/*' element={<Layout />} />
-            {/* <Route exact path='*' element={<Navigate to='/' />} /> */}
+            <Route exact path='*' element={<Navigate to='/login' />} />
           </Routes>
         </Suspense>
       </BrowserRouter>

@@ -14,7 +14,8 @@ function Login() {
     setTimeout(() => {
       message.success(`用户${username}登录成功`);
       setLoading(false)
-      navigate('/home', { state: { username: username } })
+      localStorage.setItem('username', username)
+      navigate('/home', { state: { username: username, password: password } })
     }, 2000)
   }
 
