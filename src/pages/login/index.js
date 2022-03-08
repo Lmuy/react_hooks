@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { Form, Input, Button, Checkbox, message, Spin } from 'antd';
+import servicePath from '../../config/apiUrl'
 import './login.scss'
 
 function Login() {
@@ -11,12 +13,27 @@ function Login() {
   
   const onFinish = () => {
     setLoading(true)
-    setTimeout(() => {
-      message.success(`用户${username}登录成功`);
-      setLoading(false)
-      localStorage.setItem('username', username)
-      navigate('/home', { state: { username: username, password: password } })
-    }, 2000)
+    
+    axios({
+      method: 'post',
+      url: servicePath.checkLogin,
+      header:{ 'Access-Control-Allow-Origin':'*' },
+      withCredentials: true,
+      data: {
+        username: username,
+        password: password
+      }
+    }).then((res) => {
+      if (res.data.data.state === false) {
+        setLoading(false)
+        message.error(`用户${username}登录失败`);
+      } else {
+        message.success(`用户${username}登录成功`);
+        setLoading(false)
+        localStorage.setItem('username', username)
+        navigate('/home', { state: { username: username, password: password } })
+      }
+    })
   }
 
   const onFinishFailed = () => {

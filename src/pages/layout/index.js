@@ -11,10 +11,10 @@ function Layout() {
     <div className="layout">
       <Header />
       <div>布局</div>
-      
-      <NavLink to="/layout/comic" className={({ isActive }) => isActive ? 'selected' : ''}>动漫</NavLink>
-      <NavLink to="/layout/novel" className={({ isActive }) => isActive ? 'selected' : ''}>文章</NavLink>
-
+      <Suspense fallback={<div>Loading...</div>}>
+        <NavLink to="/layout/comic" className={({ isActive }) => isActive ? 'selected' : ''}>动漫</NavLink>
+        <NavLink to="/layout/novel" className={({ isActive }) => isActive ? 'selected' : ''}>文章</NavLink>
+      </Suspense>
       <div>
         <Routes>
           <Route exact path='/comic' element={<Comic />} />

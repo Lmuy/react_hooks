@@ -1,12 +1,17 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'
 import { Button } from 'antd';
 import './header.scss'
 
 function Header(props) {
   const { background, changeColor } = props
+  const navigate = useNavigate()
+  const signout = () => {
+    navigate('/login')
+  }
   const login = (
     <div>
-      <Button type="text">退出</Button>
+      <Button type="text" onClick={signout}>退出</Button>
       <Button type="text" onClick={changeColor}>换肤</Button>
     </div>
   )

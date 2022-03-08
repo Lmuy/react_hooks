@@ -11,7 +11,7 @@ function App() {
       <BrowserRouter>
         <Suspense fallback={null}>
           <Routes>
-            <Route exact path='/home' element={<Home />} />
+            <Route exact path='/home/*' element={<Home />} />
             <Route exact path='/login' element={<Login/>} />
             <Route exact path='/layout/*' element={<Layout />} />
             <Route exact path='*' element={<Navigate to='/login' />} />
