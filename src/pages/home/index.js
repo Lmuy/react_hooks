@@ -1,21 +1,15 @@
 import React, { useEffect, useState, Suspense } from 'react';
 import { useNavigate, useLocation, Routes, Route, NavLink } from 'react-router-dom'
 import Header from '../../components/Header'
-import { Button } from 'antd';
+import Footer from '../../components/Footer'
 import './home.scss'
+import { Menu } from 'antd';
 const Comic = React.lazy(() => import('../comic/index.js'))
 const Novel = React.lazy(() => import('../novel/index.js'))
 
 function Home(props) {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   let params = useLocation()
-
-  const toLogin = () => {
-    navigate('/login')
-  }
-  const toLayout = () => {
-    navigate('/layout')
-  }
 
   const [color, setColor] = useState('transparent')
   useEffect(() => {
@@ -28,30 +22,41 @@ function Home(props) {
     setColor(arr[No])
   }
 
+  const [current, setCurrent] = useState('comic')
+  const handleClick = (e) => {
+    setCurrent(e.key)
+  }
+
   return (
     <div className="home">
+      {/* 头部 */}
       <Header background={color} changeColor={handleColor}/>
-      <div>布局</div>
-      <Suspense fallback={<div>Loading...</div>}>
-        <NavLink to="/home/comic" className={({ isActive }) => isActive ? 'selected' : ''}>动漫</NavLink>
-        <NavLink to="/home/novel" className={({ isActive }) => isActive ? 'selected' : ''}>文章</NavLink>
-      </Suspense>
-      <div>
-        <Routes>
-          <Route exact path='/comic' element={<Comic />} />
-          <Route exact path='/novel' element={<Novel/>} />
-        </Routes>
+      {/* 主体 */}
+      <div className='wrapper'>
+        <div className='content'>
+          {/* 菜单 */}
+        <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
+          <Menu.Item key="comic">
+            <Suspense fallback={<div>Loading...</div>}>
+              <NavLink to="/home/comic" className={({ isActive }) => isActive ? 'selected' : ''}>动漫</NavLink>
+            </Suspense>
+          </Menu.Item>
+          <Menu.Item key="novel">
+            <Suspense fallback={<div>Loading...</div>}>
+              <NavLink to="/home/novel" className={({ isActive }) => isActive ? 'selected' : ''}>文章</NavLink>
+            </Suspense>
+          </Menu.Item>
+        </Menu>
+        <div>
+          <Routes>
+            <Route exact path='/comic' element={<Comic />} />
+            <Route exact path='/novel' element={<Novel/>} />
+          </Routes>
+        </div>
+        </div>
       </div>
-      <h1>Home Page</h1>
-      <div>接收到的参数是
-        {/* {Object.keys(params.state).map((key) => (
-          <p key={key}>
-            {key} : {params.state[key]}
-          </p>
-        ))} */}
-      </div>
-      <Button onClick={toLogin}>去登录</Button>
-      <Button onClick={toLayout}>去浏览</Button>
+      {/* 底部 */}
+      <Footer />
     </div>
   );
 }
