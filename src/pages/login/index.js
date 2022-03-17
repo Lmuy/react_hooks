@@ -31,7 +31,7 @@ function Login() {
         message.success(`用户${username}登录成功`);
         setLoading(false)
         localStorage.setItem('username', username)
-        navigate('/home', { state: { username: username, password: password } })
+        navigate('/home/comic', { state: { username: username, password: password } })
       }
     })
   }

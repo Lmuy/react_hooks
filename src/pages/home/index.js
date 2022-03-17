@@ -49,8 +49,8 @@ function Home(props) {
         </Menu>
         <div>
           <Routes>
-            <Route exact path='/comic' element={<Comic />} />
-            <Route exact path='/novel' element={<Novel/>} />
+            <Route exact path='/home/comic' element={<Comic />} />
+            <Route exact path='/home/novel' element={<Novel/>} />
           </Routes>
         </div>
         </div>

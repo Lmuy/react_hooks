@@ -7,7 +7,7 @@ function Comic() {
 
   useEffect(() => {
     timer.current = setInterval(() => {
-      if (count < 10) {
+      if (i < 10) {
         setCount(i++)
       } else {
         clearInterval(timer.current)

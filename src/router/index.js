@@ -1,60 +1,42 @@
-import React, { lazy, Suspense } from 'react';
-import { Navigate } from "react-router-dom";
-const Comic = React.lazy(() => import('../pages/comic'))
-const Novel = React.lazy(() => import('../pages/novel'))
-const Movies = React.lazy(() => import('../pages/movies'))
-const Login = React.lazy(() => import('../pages/login'))
-const Home = React.lazy(() => import('../pages/home'))
-
-const SuspenseComponent = Component => props => {
-  return (
-    <Suspense fallback={null}>
-      <Component {...props}></Component>
-    </Suspense>
-  )
-}
-
-const Menu = [
+import React, { Suspense, lazy } from 'react'
+import {
+  useRoutes
+} from 'react-router-dom'
+const router = [
   {
-    path:'/',
-    exact: true,
-    render: () =>  <Navigate to='/login' />
+    path: '/',
+    component: lazy(() => import('../pages/home')),
+    children: [
+      { path: '/home/comic', component: lazy(() => import('../pages/comic')) },
+      { path: '/home/novel', component: lazy(() => import('../pages/novel')) },
+    ]
   },
   {
     path: '/login',
-    exact: true,
-    component: SuspenseComponent(Login)
+    component: lazy(() => import('../pages/login'))
   },
   {
-    path: '/home',
-    component: SuspenseComponent(Home),
-    routes: [{
-      path: '/home/comic',
-      exact: true,
-      component: SuspenseComponent(Comic)
-    }]
+    path: '*',
+    component: lazy(() => import('../pages/login'))
   }
 ]
 
-// const Menu = [
-//   {
-//     path: '/comic',
-//     name: 'comic',
-//     title: '动漫',
-//     component: Comic
-//   },
-//   {
-//     path: '/novel',
-//     name: 'novel',
-//     title: '文章',
-//     component: Novel
-//   },
-//   {
-//     path: '/movies',
-//     name: 'movies',
-//     title: '电影',
-//     component: Movies
-//   }
-// ]
+// 路由处理方式
+const changeRouter = (routers) => {
+  return routers.map(item => {
+    if (item.children) {
+      item.children = changeRouter(item.children)
+    }
+    item.element = <Suspense fallback={
+      <div>加载中...</div>
+    }>
+      {/* 把懒加载的异步路由变成组件装载进去 */}
+      <item.component />
+    </Suspense>
+    return item
+  })
+}
 
-export default Menu
+const Router = () => useRoutes(changeRouter(router))
+
+export default Router
